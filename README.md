@@ -12,21 +12,43 @@ Automate the provisioning of Oracle Cloud's Always Free A1.Flex ARM instances us
 
 ---
 
+## 📂 Which Script Should I Use?
+
+There are two scripts in this repository. **Use `oracle_a1_automation-v2.sh`** — it is the recommended, up-to-date version.
+
+| Feature | `oracle_a1_automation.sh` (v1) | `oracle_a1_automation-v2.sh` (v2 ✅ Recommended) |
+|---|---|---|
+| Basic retry loop | ✅ | ✅ |
+| Telegram notifications | ✅ | ✅ |
+| Region detection | ❌ | ✅ |
+| OCI CLI health check on startup | ❌ | ✅ |
+| Validates job IDs before polling | ❌ | ✅ |
+| Handles API `ServiceError` responses | ❌ | ✅ |
+| Crash/unexpected-exit notification | ❌ | ✅ |
+| Extracts & reports public IP on success | ❌ | ✅ |
+| Suppresses Telegram spam on capacity errors | ❌ | ✅ |
+| Periodic "still running" status updates | ❌ | ✅ |
+
+> [!NOTE]
+> `oracle_a1_automation.sh` (v1) is kept for reference only. All new users should use v2.
+
+---
+
 ## ⚡ Quick Start
 
 ```bash
 # Download the script
-curl -o oracle_a1_automation.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation.sh
+curl -o oracle_a1_automation-v2.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation-v2.sh
 
 # Make it executable
-chmod +x oracle_a1_automation.sh
+chmod +x oracle_a1_automation-v2.sh
 
 # Edit configuration (add your Stack OCID, Telegram bot token, and chat ID)
-nano oracle_a1_automation.sh
+nano oracle_a1_automation-v2.sh
 
 # Run in screen session
 screen -S oracle-automation
-./oracle_a1_automation.sh
+./oracle_a1_automation-v2.sh
 
 # Detach: Ctrl+A, then D
 ```
@@ -265,7 +287,7 @@ output "instance_public_ip" {
 ### Step 1: Download the Script
 
 ```bash
-curl -o oracle_a1_automation.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation.sh
+curl -o oracle_a1_automation-v2.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation-v2.sh
 ```
 
 ### Step 2: Configure the Script
@@ -276,13 +298,13 @@ Edit the file and replace:
 - `your-chat-id-here` with your Telegram Chat ID
 
 ```bash
-nano oracle_a1_automation.sh
+nano oracle_a1_automation-v2.sh
 ```
 
 ### Step 3: Make Script Executable
 
 ```bash
-chmod +x oracle_a1_automation.sh
+chmod +x oracle_a1_automation-v2.sh
 ```
 
 ---
@@ -296,7 +318,7 @@ chmod +x oracle_a1_automation.sh
 screen -S oracle-automation
 
 # Run the script
-./oracle_a1_automation.sh
+./oracle_a1_automation-v2.sh
 ```
 
 ### Detach from Screen (Leave Running)
