@@ -54,7 +54,7 @@ function plan_job() {
     JOB_ID=$(oci resource-manager job create --stack-id ${STACK_ID} --operation PLAN --query "data.id" --raw-output 2>&1)
     
     # Check if job creation failed
-    if [[ $JOB_ID == *"ServiceError"* ]] || [[ $JOB_ID == *"ocid"* != true ]]; then
+    if [[ $JOB_ID == *"ServiceError"* ]] || [[ ! $JOB_ID =~ ^ocid1\. ]]; then
         echo "ERROR: Failed to create PLAN job: ${JOB_ID}" | tee -a ${LOGFILE}
         send_telegram "❌ <b>PLAN Job Creation Failed</b>%0A%0AError: ${JOB_ID:0:200}%0A%0ACheck your Stack ID and permissions."
         exit 1
@@ -106,7 +106,7 @@ function apply_job() {
     JOB_ID=$(oci resource-manager job create --stack-id ${STACK_ID} --operation APPLY --apply-job-plan-resolution "{\"isAutoApproved\":true}" --query "data.id" --raw-output 2>&1)
     
     # Check if job creation failed
-    if [[ $JOB_ID == *"ServiceError"* ]] || [[ $JOB_ID == *"ocid"* != true ]]; then
+    if [[ $JOB_ID == *"ServiceError"* ]] || [[ ! $JOB_ID =~ ^ocid1\. ]]; then
         echo "ERROR: Failed to create APPLY job: ${JOB_ID}" | tee -a ${LOGFILE}
         return 1
     fi
