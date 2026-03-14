@@ -2,6 +2,14 @@
 
 Automate the provisioning of Oracle Cloud's Always Free A1.Flex ARM instances using OCI Resource Manager and get notified via Telegram when successful.
 
+---
+
+> [!TIP]
+> **🚀 Quick Stack Creation Tip**  
+> You don't need to write Terraform from scratch! When creating an A1.Flex instance through the Oracle Cloud GUI, simply configure all your settings (shape, image, network, SSH keys, etc.) and at the final step, instead of clicking "Create", click **"Save as Stack"**. This automatically generates a Terraform stack with all your configurations, giving you the Stack OCID you need for automation!
+
+---
+
 ## 🎯 Problem Statement
 
 Oracle Cloud's Always Free tier offers powerful A1.Flex ARM instances (up to 4 OCPUs, 24GB RAM), but they're almost never available due to high demand. Instead of manually refreshing the console hoping for capacity, this script automates the entire process.
@@ -134,6 +142,32 @@ You should receive a message on Telegram.
 
 ## 📝 Create Terraform Stack
 
+> [!NOTE]
+> **Easiest Method**: Use the Oracle Cloud GUI to create your stack instead of writing Terraform manually!
+
+### Method 1: Create Stack from GUI (Recommended ⭐)
+
+1. Go to **OCI Console → Compute → Instances**
+2. Click **Create Instance**
+3. Configure your A1.Flex instance:
+   - **Name**: `a1-free-instance`
+   - **Image**: Select Ubuntu or Oracle Linux (ARM-based)
+   - **Shape**: Click "Change Shape" → Select `VM.Standard.A1.Flex`
+   - **OCPUs**: 4 (max for free tier)
+   - **Memory**: 24 GB (max for free tier)
+   - **Network**: Select your VCN and subnet
+   - **SSH Keys**: Add your public SSH key
+4. **Instead of clicking "Create"**, scroll down and click **"Save as Stack"**
+5. Give your stack a name (e.g., `a1-automation-stack`)
+6. Click **Save**
+7. **Copy the Stack OCID** from the stack details page
+
+That's it! You now have a Terraform stack without writing any code.
+
+### Method 2: Manual Terraform Configuration
+
+If you prefer to write Terraform manually:
+
 ### Step 1: Find Required Information
 
 You'll need:
@@ -191,7 +225,7 @@ output "instance_public_ip" {
 }
 ```
 
-### Step 3: Create Stack in OCI Console
+### Step 3: Create Stack in OCI Console (Manual Method Only)
 
 1. Go to **Developer Services → Resource Manager → Stacks**
 2. Click **Create Stack**
