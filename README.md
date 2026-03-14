@@ -16,17 +16,17 @@ Automate the provisioning of Oracle Cloud's Always Free A1.Flex ARM instances us
 
 ```bash
 # Download the script
-curl -o oracle_a1_automation.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation.sh
+curl -o oracle_a1_automation-v2.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation-v2.sh
 
 # Make it executable
-chmod +x oracle_a1_automation.sh
+chmod +x oracle_a1_automation-v2.sh
 
 # Edit configuration (add your Stack OCID, Telegram bot token, and chat ID)
-nano oracle_a1_automation.sh
+nano oracle_a1_automation-v2.sh
 
 # Run in screen session
 screen -S oracle-automation
-./oracle_a1_automation.sh
+./oracle_a1_automation-v2.sh
 
 # Detach: Ctrl+A, then D
 ```
