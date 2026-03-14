@@ -265,7 +265,7 @@ output "instance_public_ip" {
 ### Step 1: Download the Script
 
 ```bash
-curl -o oracle_a1_automation.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation.sh
+curl -o oracle_a1_automation-v2.sh https://raw.githubusercontent.com/Jaggu762/oracle-vps-script/main/oracle_a1_automation-v2.sh
 ```
 
 ### Step 2: Configure the Script
@@ -276,13 +276,13 @@ Edit the file and replace:
 - `your-chat-id-here` with your Telegram Chat ID
 
 ```bash
-nano oracle_a1_automation.sh
+nano oracle_a1_automation-v2.sh
 ```
 
 ### Step 3: Make Script Executable
 
 ```bash
-chmod +x oracle_a1_automation.sh
+chmod +x oracle_a1_automation-v2.sh
 ```
 
 ---
@@ -296,7 +296,7 @@ chmod +x oracle_a1_automation.sh
 screen -S oracle-automation
 
 # Run the script
-./oracle_a1_automation.sh
+./oracle_a1_automation-v2.sh
 ```
 
 ### Detach from Screen (Leave Running)
