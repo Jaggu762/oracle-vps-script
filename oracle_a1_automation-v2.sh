@@ -9,7 +9,7 @@ export SUPPRESS_LABEL_WARNING=True
 STACK_ID="your-stack-ocid-here"
 LOGFILE="oracle_automation_v2.log"
 COMPARTMENT_ID="your_compartment_id"
-REGION="Unknown Region"
+REGION="Your_Region_Name"
 
 # Retry and rate-limit tuning
 BASE_WAIT=50
