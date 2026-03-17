@@ -7,7 +7,7 @@ Automate the provisioning of Oracle Cloud's Always Free A1.Flex ARM instances us
 ---
 
 > [!TIP]
-> **🚀 Quick Stack Creation Tip**  
+> **🚀 Quick Stack Creation Tip**  _Rate Limits have been increased to prevent rate limits even with the proper handling_
 > You don't need to write Terraform from scratch! When creating an A1.Flex instance through the Oracle Cloud GUI, simply configure all your settings (shape, image, network, SSH keys, etc.) and at the final step, instead of clicking "Create", click **"Save as Stack"**. This automatically generates a Terraform stack with all your configurations, giving you the Stack OCID you need for automation!
 
 ---
