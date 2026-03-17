@@ -41,9 +41,31 @@ Oracle Cloud's Always Free tier offers powerful A1.Flex ARM instances (up to 4 O
 
 - **24/7 Automated Retries** - Runs continuously until successful
 - **Stack-based Deployment** - More reliable than manual instance creation
+- **Auto Stack Discovery (Optional)** - If `STACK_ID` is not set, script tries to find one automatically
 - **Telegram Notifications** - Get instant alerts when your instance is created
 - **Detailed Logging** - Track all attempts and errors
+- **429 Rate-Limit Protection** - Exponential backoff + jitter for Resource Manager API throttling
+- **Anti-Crash Retry Flow** - Transient PLAN/APPLY API failures no longer stop the script
+- **Graceful Stop Handling** - `Ctrl+C` exits cleanly without false crash alerts
 - **Uses Existing E2 Micro** - Leverages your always-available free instance
+
+### Retry Tuning
+
+`oracle_a1_automation-v2.sh` includes these variables at the top:
+
+- `BASE_WAIT` - Base retry wait between attempts (default `35` seconds)
+- `MAX_WAIT` - Maximum capped retry wait (default `600` seconds)
+- `OCI_MAX_RETRIES` - Retries for a single OCI API call (default `8`)
+- `OCI_BASE_DELAY` - Base delay for OCI API retry backoff (default `8` seconds)
+- `OCI_MAX_DELAY` - Maximum OCI API retry delay (default `180` seconds)
+- `JOB_POLL_WAIT` - Poll interval for PLAN/APPLY job status checks (default `15` seconds)
+- `TELEGRAM_RATE_LIMIT_COOLDOWN` - Cooldown for repeated rate-limit alerts (default `900` seconds)
+
+Suggested first-time setup:
+
+- Set `STACK_ID` manually for the most predictable behavior.
+- Keep `COMPARTMENT_ID` only as a fallback helper.
+- Keep retry defaults unless you are hitting unusual API limits.
 
 ## 📋 Prerequisites
 
@@ -271,9 +293,14 @@ curl -o oracle_a1_automation-v2.sh https://raw.githubusercontent.com/Jaggu762/or
 ### Step 2: Configure the Script
 
 Edit the file and replace:
-- `your-stack-ocid-here` with your Stack OCID
+- `your-stack-ocid-here` with your Stack OCID (recommended)
 - `your-bot-token-here` with your Telegram Bot Token
 - `your-chat-id-here` with your Telegram Chat ID
+
+Notes:
+
+- If `STACK_ID` is left as placeholder, the script will try to auto-discover a stack from your tenant.
+- Auto-discovery is convenient, but manual `STACK_ID` is safer in accounts with multiple stacks.
 
 ```bash
 nano oracle_a1_automation-v2.sh
@@ -345,14 +372,16 @@ exit
 ## 🎯 What Happens Next
 
 1. **Script starts** → You receive a Telegram notification
-2. **Continuous attempts** → Every 35 seconds, it tries to create the instance
-3. **Success!** → You get a Telegram notification with instance details
-4. **Script exits** → Automation stops (you got your instance!)
+2. **Continuous attempts** → It runs PLAN + APPLY in a loop until capacity is available
+3. **Smart backoff** → On 429/transient API errors, it backs off automatically (with jitter)
+4. **Success!** → You get a Telegram notification with instance details
+5. **Script exits** → Automation stops (you got your instance!)
 
 ### Expected Timeline
 - Could be **hours** to **days** depending on Oracle's capacity
 - Most users report success within **24-48 hours**
 - Some get lucky within the first hour!
+- During heavy throttling windows, retries may slow down by design to avoid tenant-level 429 blocks
 
 ---
 
@@ -381,6 +410,12 @@ curl -X POST "https://api.telegram.org/bot<BOT_TOKEN>/sendMessage" \
 
 - Make sure you're running it inside `screen` or `tmux`
 - Check the log file: `cat oracle_automation_v2.log`
+
+### Frequent 429 (TooManyRequests)
+
+- This is normal during crowded hours in popular regions.
+- Let the script run; it now uses exponential backoff and jitter automatically.
+- If needed, increase `BASE_WAIT` (for gentler loops) or `OCI_BASE_DELAY` (for slower API retries).
 
 ### Stack Creation Errors
 
